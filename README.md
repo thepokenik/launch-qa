@@ -22,45 +22,45 @@ Cada jornada começa isolada e usa o mesmo critério de sucesso. A contagem de p
 - URL de entrada, acesso autorizado, dados e contas de teste quando necessários e um primeiro sucesso observável. Para correções, acesso ao código. Evite efeitos externos em produção.
 - Para o caminho com `playwright-cli` abaixo: Node.js 20 ou superior, npm e Git. Instale o navegador solicitado pela ferramenta se necessário.
 
-### Instalação no Codex com playwright-cli
+### Instalação
 
-As instruções abaixo usam a tag proposta `v0.1.0` e só funcionarão depois que ela for publicada. Elas fixam também a CLI em `0.1.22`; instalações já existentes devem ser revisadas antes de substituir arquivos. Consulte as fontes oficiais: [skills no Codex](https://learn.chatgpt.com/docs/build-skills), [instalação do Playwright CLI](https://github.com/microsoft/playwright/blob/main/docs/src/getting-started-cli.md) e [instalação da skill Playwright](https://playwright.dev/agent-cli/skills).
+Requer Node.js 22.20 ou superior e Git para o instalador de skills. A skill é distribuída diretamente pelo GitHub; não exige publicar um pacote próprio no npm.
 
-No macOS/Linux, em um diretório de trabalho onde `launch-qa` ainda não exista:
+Instalação interativa (escolha o agente e a skill):
 
 ```sh
-git clone https://github.com/thepokenik/launch-qa.git &&
-cd launch-qa &&
-git checkout --detach v0.1.0 || { echo 'Clone ou checkout falhou.'; exit 1; }
-mkdir -p "$HOME/.agents/skills"
-test ! -e "$HOME/.agents/skills/launch-qa" || { echo 'Destino já existe; revise-o antes de continuar.'; exit 1; }
-mkdir "$HOME/.agents/skills/launch-qa"
-cp SKILL.md "$HOME/.agents/skills/launch-qa/SKILL.md"
-npm install -g @playwright/cli@0.1.22 || { echo 'Instalação da CLI falhou.'; exit 1; }
-playwright-cli install --skills=agents -g || { echo 'Instalação da skill ou do navegador falhou.'; exit 1; }
-playwright-cli --version
+npx skills add thepokenik/launch-qa
 ```
 
-No PowerShell, em um diretório de trabalho onde `launch-qa` ainda não exista:
+Para instalar somente a `launch-qa` no Codex, disponível em todos os projetos:
 
-```powershell
-git clone https://github.com/thepokenik/launch-qa.git
-if ($LASTEXITCODE -ne 0) { throw 'Clone falhou.' }
-Set-Location launch-qa
-git checkout --detach v0.1.0
-if ($LASTEXITCODE -ne 0) { throw 'Checkout falhou.' }
-New-Item -ItemType Directory -Force "$HOME\.agents\skills" | Out-Null
-if (Test-Path "$HOME\.agents\skills\launch-qa") { throw 'Destino já existe; revise-o antes de continuar.' }
-New-Item -ItemType Directory "$HOME\.agents\skills\launch-qa" | Out-Null
-Copy-Item SKILL.md "$HOME\.agents\skills\launch-qa\SKILL.md"
+```sh
+npx skills add thepokenik/launch-qa --skill launch-qa --agent codex --global
+```
+
+Para instalar apenas no projeto atual, execute o comando na pasta desse projeto e remova `--global`. No PowerShell, use `npx.cmd` se a política de execução bloquear `npx.ps1`.
+
+Confira as skills disponíveis antes de instalar:
+
+```sh
+npx skills add thepokenik/launch-qa --list
+```
+
+Depois da instalação global, confira com `npx skills list --global` e reinicie o Codex para carregar a skill. Para atualizar, use `npx skills update --global`; esse comando verifica as skills globais instaladas. A instalação pelo nome do repositório acompanha sua branch padrão.
+
+A descoberta da skill foi verificada com `--list` tanto na pasta local quanto no repositório GitHub. Isso valida o reconhecimento do pacote, não uma auditoria nem a instalação completa no ambiente de cada usuário. Consulte a [documentação do instalador](https://github.com/vercel-labs/skills/blob/main/docs/commands.md).
+
+### Navegador opcional: playwright-cli
+
+A instalação acima fornece as instruções da auditoria. É necessário também um navegador real controlável, com sessões isoladas. Se o agente já tiver uma ferramenta compatível, use-a. Para configurar o caminho com Playwright CLI:
+
+```sh
 npm install -g @playwright/cli@0.1.22
-if ($LASTEXITCODE -ne 0) { throw 'Instalação da CLI falhou.' }
 playwright-cli install --skills=agents -g
-if ($LASTEXITCODE -ne 0) { throw 'Instalação da skill ou do navegador falhou.' }
 playwright-cli --version
 ```
 
-O comando do Playwright instala sua skill global em `~/.agents/skills/playwright-cli`; verifique esse destino antes de executá-lo. Reinicie o Codex para carregar skills novas. Se seu ambiente usar outro local de descoberta, consulte sua documentação. A instalação via npm precisa de acesso à rede; a disponibilidade de navegadores e dependências do sistema varia conforme o ambiente.
+Revise uma instalação existente antes de substituí-la. O comando do Playwright instala sua skill global em `~/.agents/skills/playwright-cli`; instale o navegador solicitado pela ferramenta se necessário. A disponibilidade de navegadores e dependências do sistema varia conforme o ambiente. Consulte a [instalação do Playwright CLI](https://github.com/microsoft/playwright/blob/main/docs/src/getting-started-cli.md) e a [instalação da skill Playwright](https://playwright.dev/agent-cli/skills).
 
 ### Exemplos de solicitação
 
@@ -113,7 +113,15 @@ Each journey starts isolated and uses the same success criterion. Affected-perso
 
 The core skill needs a compatible agent, access to a controllable real browser with isolated sessions, an authorized test URL, a measurable first success, and any necessary test accounts or data. Code access is needed for fixes. Avoid external effects in production. Playwright is optional for the core workflow; screenshots, viewport and network emulation depend on the chosen tool.
 
-For the `playwright-cli` path, install Node.js 20+, npm and Git. Follow the [installation commands above](#instalação-no-codex-com-playwright-cli) for macOS/Linux or PowerShell. They install the proposed `v0.1.0` tag **after publication** and pin Playwright CLI to `0.1.22`. Review existing destinations first and restart Codex after installing. Official sources: [Codex skills](https://learn.chatgpt.com/docs/build-skills), [Playwright CLI setup](https://github.com/microsoft/playwright/blob/main/docs/src/getting-started-cli.md), and [Playwright skill setup](https://playwright.dev/agent-cli/skills).
+Install Node.js 22.20+ and Git, then run:
+
+```sh
+npx skills add thepokenik/launch-qa --skill launch-qa --agent codex --global
+```
+
+Omit `--global` to install in the current project. Use `npx.cmd` in PowerShell if execution policy blocks `npx.ps1`. Verify discovery with `npx skills add thepokenik/launch-qa --list`, inspect global installs with `npx skills list --global`, and restart Codex. The repository's default branch is used. Local and GitHub discovery were verified; a full install in each user's environment was not. See the [installer reference](https://github.com/vercel-labs/skills/blob/main/docs/commands.md).
+
+Browser tooling is separate. If needed, follow the [optional Playwright setup above](#navegador-opcional-playwright-cli), which pins the CLI to `0.1.22`. Review existing installations before replacing them.
 
 ### Example prompts
 
