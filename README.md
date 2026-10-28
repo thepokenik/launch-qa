@@ -1,0 +1,1 @@
+Avalia a jornada de primeiro uso de uma aplicação antes do lançamento com cinco perfis simulados em navegador. Identifica e prioriza problemas, registra evidências e, quando solicitado, corrige e testa novamente os fluxos.
