@@ -13,7 +13,7 @@ Use project context to establish the entry URL, environment, test access, and ob
 
 An audit alone does not authorize product changes. When fixes are included in the request, continue through implementation and relevant verification without pausing for another approval of the same scope. Completion then also requires verification results for each attempted fix, including anything unresolved or blocked.
 
-Prefer test environments and data for actions with external effects. If essential access or a real browser is unavailable, report the blocker; source inspection alone is not a tested journey.
+Prefer test environments and data for actions with external effects. Do not perform destructive actions or actions with external effects without authorization. If essential access or a real browser is unavailable, report the blocker; source inspection alone is not a tested journey.
 
 ## Five first-time journeys
 
