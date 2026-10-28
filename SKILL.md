@@ -1,21 +1,23 @@
 ---
 name: launch-qa
-description: Evaluate first-time web user journeys before launch using five simulated personas in a real browser. Capture and prioritize friction, and fix and retest issues when requested.
+description: Audit first-time web user journeys before launch or after onboarding changes, using five simulated personas in a real browser.
 ---
 
 # Launch QA
 
-Evaluate the path from an application's entry page to a verifiable first user success. Respond in the user's language unless instructed otherwise. Treat the five personas as simulations, not a statistical sample of real people.
+Find friction between an application's entry page and a verifiable first user success. Deliver prioritized, reproducible findings grounded in browser evidence. The five personas are simulations, not a statistical sample of real people. Respond in the user's language.
 
-## Prepare
+## Scope and completion
 
-Inspect the project and its instructions to determine how to run or access the application, its environment and entry URL, and an observable first-success criterion. Identify available test accounts, data, browser capabilities, and delegation tools. Infer what you can; ask only for information necessary to proceed that cannot be obtained from the project or environment. Prefer test environments and test data for actions with external effects, and stay within the authorized scope. If a real browser or essential access is unavailable, report the blocker instead of claiming a journey was tested.
+Use project context to establish the entry URL, environment, test access, and observable first-success criterion. State an inferred criterion; ask only when missing information prevents a meaningful journey. An audit is complete when all five personas have an outcome (completed, abandoned, or blocked), findings are consolidated, and coverage gaps are explicit.
 
-Determine whether the request includes fixes. An audit alone does not authorize product changes.
+An audit alone does not authorize product changes. When fixes are included in the request, continue through implementation and relevant verification without pausing for another approval of the same scope. Completion then also requires verification results for each attempted fix, including anything unresolved or blocked.
 
-## Run five journeys
+Prefer test environments and data for actions with external effects. If essential access or a real browser is unavailable, report the blocker; source inspection alone is not a tested journey.
 
-Use a real browser. Start each persona in an isolated session without shared cookies, storage, or authentication state, and attempt the same first-success criterion. Use separate test accounts or records where needed to prevent one journey from changing another's starting state. Observe and record steps, outcomes, confusion and blockers, available screenshots, and whether the journey was completed, abandoned, or blocked. Avoid unnecessary sensitive data in captures and reports.
+## Five first-time journeys
+
+Use a real browser and the same success criterion for every persona. Start each in an isolated session without shared cookies, storage, or authentication; use separate accounts or records when server state would affect another journey. Choose actions from what the interface reveals, without using source-code knowledge or discoveries from previous personas to bypass first-time friction.
 
 1. **Impatient user:** skim, choose the first plausible button, and abandon at the first error.
 2. **Skeptical user:** look for pricing, terms, and privacy before signing up, then attempt the goal.
@@ -23,24 +25,22 @@ Use a real browser. Start each persona in an isolated session without shared coo
 4. **Non-native English speaker:** interpret instructions literally without assuming knowledge the interface does not provide.
 5. **Breaker:** try invalid input, back navigation, and double clicks within the test environment's limits, then attempt the goal.
 
-Record actual browser and environment conditions. If a condition cannot be reproduced, such as slow 3G, explicitly record the limitation and do not claim it was tested. If a persona stops or is blocked, do not infer what would have happened on later steps. Save or link available screenshots with enough context to associate them with the relevant observation.
+Record steps, observed friction, outcome, and actual browser conditions. Link available screenshots to the relevant observation and avoid unnecessary sensitive data. Mark unsupported conditions, such as network emulation, as untested. Once a persona abandons or is blocked, later steps remain untested for that persona; any diagnostic exploration is separate evidence.
 
-When the user requests or authorizes subagents and the environment permits, assign one journey per subagent, respecting any requested model and reasoning level when available. Run batches if concurrency is limited. Otherwise conduct separate journeys yourself and report the delegation limitation. Report only delegation and model settings actually used.
+Run journeys yourself unless subagents are requested or authorized and available. Delegated journeys need the same goal and independent starting state; share findings only after their observations are recorded. Report unavailable requested capabilities, not the absence of optional delegation.
 
-## Consolidate
+## Findings and priorities
 
-Group observations of the same underlying problem. For each item record:
+Group observations of the same underlying problem. Each finding needs reproduction steps, expected and observed results, impact, severity, evidence, and status (**confirmed**, **suspected**, or **not reproduced**). Separate observations from inferences.
 
-- Number and names of affected personas, counting only those that reached the relevant step and observed the issue.
-- Reproduction steps, observed and expected results, impact, severity, and evidence or screenshot links.
-- Status: **confirmed**, **suspected**, or **not reproduced**, with any uncertainty or relevant conditions.
+Count and name only personas that reached the relevant step and observed the problem. Include how many reached that step so untested personas are not mistaken for unaffected ones. Order by affected-persona count, then severity; prominently flag severe blockers even if only one persona encountered them. These counts describe simulated coverage, not real-user prevalence.
 
-Order by the number of affected simulated personas, using severity as the tie-breaker. Highlight severe blockers even when only one persona encountered them. Distinguish direct observations from inferences and do not imply that persona counts represent real-user prevalence.
+## Corrections when requested
 
-## Fix and retest when requested
+With code access, fix confirmed problems within scope. Verify each fix against its original reproduction and relevant checks. Repeat affected journeys in fresh isolated sessions under the original conditions; repeat all five when changes touch the shared onboarding path, have uncertain cross-persona impact, or the user requests a full rerun. Label carried-forward results so they cannot be mistaken for fresh verification.
 
-If fixes are requested and code is accessible, fix confirmed problems within scope and run checks appropriate to the changes. Then repeat all five journeys in fresh isolated sessions under the original conditions, and verify each fix specifically. Record new problems, remaining issues, and blockers. Do not claim a fix is verified without subsequent observation or testing; report any inability to repeat a condition or journey. If fixes are not requested or code is inaccessible, report findings and any limitation without changing the product.
+Report inaccessible code or unavailable retest conditions and continue independent work that remains possible. Stop at verified scoped fixes or explicit unresolved blockers; do not expand into unrelated improvements. A change is not a verified fix until subsequent observation or testing supports it.
 
-## Report
+## Deliverable
 
-Deliver the consolidated, prioritized issues and available evidence, corrections and their verification results, and each persona's outcome before and, if retested, after changes. Include limitations, unresolved items, and blocked or untested steps. Make clear what was actually observed and tested.
+Present prioritized findings and evidence, each persona's outcome and coverage, and any fixes with their verification results. For retests, distinguish before, after, and not rerun. Include unresolved issues, limitations, and blocked or untested steps. Make the next actionable decision clear without claiming broader launch readiness than the tested scope supports.
